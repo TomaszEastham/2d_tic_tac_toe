@@ -1,6 +1,5 @@
 import pygame
 import sys
-
 from pygame.locals import *
 
 pygame.init()
@@ -31,9 +30,9 @@ window=pygame.display.set_mode(desktop1_sizes,pygame.RESIZABLE)
 
 #music
 pygame.mixer.music.load("lofi-instrumental-409202.mp3")
-pygame.mixer.music.set_volume(0.5)
+volume=0.5
+pygame.mixer.music.set_volume(volume)
 pygame.mixer.music.play(-1)
-
 
 #clock
 clock=pygame.time.Clock()
@@ -64,6 +63,12 @@ def win_text(winner):
 settings_font=pygame.font.SysFont("freesanbold",100)
 settings_text=settings_font.render("Settings",True,red)
 settings_text_x,settings_text_y=settings_font.size("Settings")
+
+#mute button
+mute_button_font=pygame.font.SysFont("freesanbold.ttf", 50)
+mute_button_text1=mute_button_font.render("Muted",True,black)
+mute_button_text2=mute_button_font.render("Unmuted",True,black)
+mute_button_text_x,mute_button_text_y=mute_button_font.size("Unmute")
 
 #play button
 play_button_font=pygame.font.SysFont("freesanbold.ttf", 66)
@@ -109,6 +114,8 @@ if_menu=True
 if_game=False
 if_settings=False
 if_game_ending=False
+
+music_on=True
 
 def vertical(x):
     if board[0]==board[3]==board[6]==x:
@@ -178,8 +185,14 @@ x_cursor=pygame.cursors.Cursor([40,40],x_surface_cursor)
 #back to menu button
 menu_rect_box=pygame.Rect(window_width * 0.85, 25, menu_button_text_x * 1.5, menu_button_text_y * 1.5)
 
+mute_rect_box=pygame.Rect(window_center_x-100,window_center_y*0.75,200,100)
 
 while True:
+    if music_on:
+        pygame.mixer.music.unpause()
+    else:
+        pygame.mixer.music.pause()
+
     mouse_pos=pygame.mouse.get_pos()
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
@@ -195,7 +208,6 @@ while True:
                 if if_menu:
                     #quit button
                     if quit_rect_box.collidepoint(mouse_pos):
-                        print("exited through exit button")
                         pygame.quit()
                         sys.exit()
                     #play button
@@ -240,6 +252,12 @@ while True:
                     if menu_rect_box.collidepoint(mouse_pos):
                         if_settings=False
                         if_menu=True
+                    #mute button
+                    if mute_rect_box.collidepoint(mouse_pos):
+                        if music_on:
+                            music_on=False
+                        else:
+                            music_on=True
 
     #window sizes
     window_size=pygame.display.get_window_size()
@@ -285,7 +303,7 @@ while True:
         #settings button
         settings_rect_box=pygame.Rect(window_center_x-settings_button_text_x//2-150,window_center_y*1.15,settings_button_text_x*1.5,settings_button_text_y*1.5)
         pygame.draw.rect(window,dark_grey,settings_rect_box)
-        settings_rect_text=settings_rect_box.move(25,10)
+        settings_rect_text=settings_rect_box.move(45,10)
         window.blit(settings_button_text,settings_rect_text)
 
     #game screen
@@ -369,5 +387,16 @@ while True:
         pygame.draw.rect(window, red, menu_rect_box)
         menu_rect_text = menu_rect_box.move(15, 7.5)
         window.blit(menu_button_text, menu_rect_text)
-        
+        #mute/unmute
+        mute_rect_box=pygame.Rect(window_center_x-mute_button_text_x//2*1.5,window_center_y*0.75,mute_button_text_x*1.5,mute_button_text_y*1.5)
+        if not music_on:
+            pygame.draw.rect(window,red,mute_rect_box)
+            mute_rect_text=mute_rect_box.move(40,7.5)
+            window.blit(mute_button_text1,mute_rect_text)
+        else:
+            pygame.draw.rect(window, green, mute_rect_box)
+            mute_rect_text = mute_rect_box.move(20, 7.5)
+            window.blit(mute_button_text2, mute_rect_text)
+
+
     pygame.display.flip()

@@ -1,7 +1,6 @@
 import pygame
 import sys
 
-from bokeh.command.subcommands.settings import Settings
 from pygame.locals import *
 
 pygame.init()
@@ -370,4 +369,5 @@ while True:
         pygame.draw.rect(window, red, menu_rect_box)
         menu_rect_text = menu_rect_box.move(15, 7.5)
         window.blit(menu_button_text, menu_rect_text)
+        
     pygame.display.flip()

@@ -257,14 +257,6 @@ while True:
             board_rect=pygame.Rect(window_center_x-240+rect_x+move_x,window_center_y-240+rect_y+move_y,160,160)
             board_rects.append(board_rect)
 
-    # game_board_points = ([(window_center_x-240+move_x,window_center_y-80+move_y),(window_center_x+240-5+move_x,window_center_y-80+move_y)],
-    #                      [(window_center_x-240+move_x,window_center_y+80+move_y),(window_center_x+240-5+move_x,window_center_y+80+move_y)],
-    #                      [(window_center_x-80+move_x,window_center_y-240+move_y),
-    #                      (window_center_x-80+move_x,window_center_y+240+move_y)],
-    #                      [(window_center_x+80+move_x,window_center_y-240+move_y),
-    #                      (window_center_x+80+move_x,window_center_y+240+move_y)])
-
-
     # background
     window.fill(light_grey)
     # game name
